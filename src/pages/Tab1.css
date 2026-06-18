@@ -1,0 +1,36 @@
+ion-content {
+  --background: #121212;
+}
+
+.repo-card {
+  margin: 12px 0;
+  border-radius: 18px;
+}
+
+.repo-item {
+  --background: transparent;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+}
+
+.repo-avatar {
+  width: 55px;
+  height: 55px;
+}
+
+.repo-avatar img {
+  object-fit: contain;
+  border-radius: 50%;
+  background: white;
+  padding: 4px;
+}
+
+.repo-nombre {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.repo-descripcion {
+  font-size: 14px;
+  opacity: 0.8;
+}

@@ -1,0 +1,29 @@
+ion-content {
+  --background: #121212;
+}
+
+.perfil-card {
+  max-width: 600px;
+  margin: 20px auto;
+  border-radius: 18px;
+}
+
+.avatar-contenedor {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.avatar-usuario {
+  width: 130px;
+  height: 130px;
+}
+
+.avatar-usuario img {
+  object-fit: cover;
+}
+
+.info-usuario {
+  margin-top: 15px;
+  line-height: 1.9;
+}

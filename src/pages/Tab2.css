@@ -1,0 +1,33 @@
+ion-content {
+  --background: #121212;
+}
+
+.form-card {
+  max-width: 600px;
+  margin: 30px auto;
+  border-radius: 20px;
+}
+
+.form-item {
+  margin-top: 15px;
+}
+
+.btn-crear {
+  margin-top: 25px;
+  height: 48px;
+  font-weight: 600;
+}
+
+ion-card-title {
+  text-align: center;
+  font-size: 1.4rem;
+}
+
+ion-card-subtitle {
+  text-align: center;
+}
+
+ion-input,
+ion-textarea {
+  margin-top: 8px;
+}
