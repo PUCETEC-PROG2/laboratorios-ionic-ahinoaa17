@@ -58,13 +58,23 @@ export const fetchRepositories = async (): Promise<Repository[]> => {
   }
 };
 
-export const createRepository = async (repository: RepositoryPayload): Promise<Repository | null> => {
+export const createRepository = async (repository: RepositoryPayload): Promise<Repository> => {
   try {
-    const response = await apiClient.post('/user/repos', repository);
+    const response = await apiClient.post<GithubRepo>('/user/repos', repository);
     if (response.status !== 201) {
       throw new Error(`Error creando repositorio: ${response.statusText}`);
     }
-    return response.data;
+
+    return {
+      id: response.data.id,
+      name: response.data.name,
+      description: response.data.description ?? undefined,
+      language: response.data.language ?? undefined,
+      owner: {
+        login: response.data.owner.login,
+        avatar_url: response.data.owner.avatar_url,
+      },
+    };
   } catch (error: unknown) {
     let message = 'Error desconocido';
     if (axios.isAxiosError(error)) {

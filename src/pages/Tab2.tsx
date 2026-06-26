@@ -13,6 +13,7 @@ import {
   IonText, 
   IonTextarea, 
   IonTitle, 
+  IonToast,
   IonToolbar, 
   useIonViewWillEnter 
 } from '@ionic/react';
@@ -30,24 +31,29 @@ const Tab2: React.FC = () => {
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
+  const [toastMessage, setToastMessage] = useState<string>('');
 
   const saveRepository = async () => {
+    setErrorMsg('');
     if (repositoryData.name.trim() === '') {
       setErrorMsg('El nombre del repositorio es requerido');
       return;
     }
+
     setLoading(true);
-    createRepository(repositoryData)
-      .then(() => {
-        history.push('/tab1');
-      })
-      .catch((error) => {
-        setErrorMsg("Error creando repositorio: " + (error as Error).message);
-        console.error("Error creando repositorio", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+
+    try {
+      await createRepository(repositoryData);
+      setToastMessage('Repositorio creado correctamente');
+      setRepositoryData({ name: '', description: '' });
+      history.push('/tab1');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Error creando repositorio';
+      setErrorMsg(`Error creando repositorio: ${message}`);
+      console.error('Error creando repositorio', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useIonViewWillEnter(() => {
@@ -113,6 +119,13 @@ const Tab2: React.FC = () => {
         </div>
 
         {loading && <LoadingSpinner />}
+        <IonToast
+          isOpen={toastMessage.length > 0}
+          message={toastMessage}
+          duration={2000}
+          color="success"
+          onDidDismiss={() => setToastMessage('')}
+        />
       </IonContent>
     </IonPage>
   );
