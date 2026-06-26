@@ -1,0 +1,92 @@
+.repo-item-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+
+.repo-item {
+  flex: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  --background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  margin: 0;
+}
+
+.repo-thumbnail {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.repo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.repo-item h2 {
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.repo-item p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: var(--ion-color-medium);
+}
+
+.repo-language {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: var(--ion-color-dark);
+}
+
+.repo-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.action-btn {
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  border-radius: 10px;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.action-btn ion-icon {
+  font-size: 22px;
+}
+
+@media (max-width: 480px) {
+  .repo-item-wrapper {
+    gap: 8px;
+    padding: 0 2px;
+  }
+
+  .repo-thumbnail {
+    width: 48px;
+    height: 48px;
+  }
+
+  .repo-item h2 {
+    font-size: 1rem;
+  }
+
+  .action-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .action-btn ion-icon {
+    font-size: 20px;
+  }
+}
+

@@ -1,54 +1,59 @@
-import {
-  IonButton,
+import React, { useState } from 'react';
+import { 
+  IonButton, 
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonContent,
-  IonHeader,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonPage,
-  IonTextarea,
-  IonTitle,
-  IonToolbar,
-  useIonAlert
+  IonContent, 
+  IonHeader, 
+  IonInput, 
+  IonPage, 
+  IonText, 
+  IonTextarea, 
+  IonTitle, 
+  IonToolbar, 
+  useIonViewWillEnter 
 } from '@ionic/react';
-
-import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import './Tab2.css';
+import type { RepositoryPayload } from '../Interfaces/RepositoryPayload';
+import { createRepository } from '../../Services/GithubService';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const Tab2: React.FC = () => {
+  const history = useHistory();
+  const [repositoryData, setRepositoryData] = useState<RepositoryPayload>({
+    name: '',
+    description: '',
+  });
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string>('');
 
-  const [nombre, setNombre] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-
-  const [presentAlert] = useIonAlert();
-
-  const guardarRepositorio = () => {
-
-    if (nombre.trim() === '' || descripcion.trim() === '') {
-
-      presentAlert({
-        header: 'Información incompleta',
-        message: 'Debe completar todos los campos.',
-        buttons: ['Aceptar']
-      });
-
+  const saveRepository = async () => {
+    if (repositoryData.name.trim() === '') {
+      setErrorMsg('El nombre del repositorio es requerido');
       return;
     }
-
-    presentAlert({
-      header: 'Repositorio guardado',
-      message: `El repositorio "${nombre}" se registró correctamente.`,
-      buttons: ['Aceptar']
-    });
-
-    setNombre('');
-    setDescripcion('');
+    setLoading(true);
+    createRepository(repositoryData)
+      .then(() => {
+        history.push('/tab1');
+      })
+      .catch((error) => {
+        setErrorMsg("Error creando repositorio: " + (error as Error).message);
+        console.error("Error creando repositorio", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
+
+  useIonViewWillEnter(() => {
+    setRepositoryData({ name: '', description: '' });
+    setErrorMsg('');
+  });
 
   return (
     <IonPage>
@@ -57,60 +62,57 @@ const Tab2: React.FC = () => {
           <IonTitle>Crear Repositorio</IonTitle>
         </IonToolbar>
       </IonHeader>
+      
+      <IonContent fullscreen className="ion-padding tab2-content">
+        <div className="tab2-wrapper">
+          <IonCard className="form-card">
+            <IonCardHeader>
+              <IonCardTitle>Nuevo repositorio</IonCardTitle>
+              <IonCardSubtitle>Llena los datos y pulsa guardar</IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>
+              <div className="form-field">
+                <IonInput
+                  label="Nombre del repositorio"
+                  placeholder="Ejemplo: mi-proyecto"
+                  labelPlacement="floating"
+                  value={repositoryData.name}
+                  onIonChange={(e) => setRepositoryData({ ...repositoryData, name: e.detail.value || '' })}
+                  clearInput
+                />
+              </div>
 
-      <IonContent className="ion-padding">
+              <div className="form-field">
+                <IonTextarea
+                  label="Descripción del repositorio"
+                  placeholder="Describe brevemente lo que hace"
+                  labelPlacement="floating"
+                  value={repositoryData.description}
+                  onIonChange={(e) => setRepositoryData({ ...repositoryData, description: e.detail.value || '' })}
+                  rows={5}
+                />
+              </div>
 
-        <IonCard className="form-card">
+              {errorMsg && (
+                <p className="error-msg">
+                  <IonText color="danger">{errorMsg}</IonText>
+                </p>
+              )}
 
-          <IonCardHeader>
-            <IonCardTitle>
-              Nuevo Repositorio
-            </IonCardTitle>
+              <IonButton
+                className="submit-button"
+                expand="block"
+                fill="solid"
+                onClick={saveRepository}
+                disabled={loading}
+              >
+                {loading ? 'Guardando...' : 'Guardar'}
+              </IonButton>
+            </IonCardContent>
+          </IonCard>
+        </div>
 
-            <IonCardSubtitle>
-              Complete la información requerida
-            </IonCardSubtitle>
-          </IonCardHeader>
-
-          <IonCardContent>
-
-            <IonItem className="form-item">
-              <IonLabel position="stacked">
-                Nombre del repositorio
-              </IonLabel>
-
-              <IonInput
-                value={nombre}
-                onIonInput={(e) => setNombre(e.detail.value!)}
-                placeholder="Ej: laboratorio-ionic"
-              />
-            </IonItem>
-
-            <IonItem className="form-item">
-              <IonLabel position="stacked">
-                Descripción
-              </IonLabel>
-
-              <IonTextarea
-                value={descripcion}
-                onIonInput={(e) => setDescripcion(e.detail.value!)}
-                rows={4}
-                placeholder="Ingrese una descripción"
-              />
-            </IonItem>
-
-            <IonButton
-              expand="block"
-              className="btn-crear"
-              onClick={guardarRepositorio}
-            >
-              Guardar Repositorio
-            </IonButton>
-
-          </IonCardContent>
-
-        </IonCard>
-
+        {loading && <LoadingSpinner />}
       </IonContent>
     </IonPage>
   );

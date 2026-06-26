@@ -2,32 +2,67 @@ ion-content {
   --background: #121212;
 }
 
+.tab2-wrapper {
+  width: min(100%, 660px);
+  margin: 20px auto;
+  padding: 0 14px;
+}
+
 .form-card {
-  max-width: 600px;
-  margin: 30px auto;
-  border-radius: 20px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.form-item {
-  margin-top: 15px;
+.form-card ion-card-header {
+  padding: 24px 22px 14px;
 }
 
-.btn-crear {
-  margin-top: 25px;
-  height: 48px;
-  font-weight: 600;
+.form-card ion-card-title {
+  font-size: 1.55rem;
+  font-weight: 700;
 }
 
-ion-card-title {
-  text-align: center;
-  font-size: 1.4rem;
-}
-
-ion-card-subtitle {
-  text-align: center;
-}
-
-ion-input,
-ion-textarea {
+.form-card ion-card-subtitle {
+  font-size: 0.95rem;
+  color: var(--ion-color-medium);
   margin-top: 8px;
+}
+
+.form-field {
+  margin-bottom: 18px;
+}
+
+.form-field ion-input,
+.form-field ion-textarea {
+  width: 100%;
+}
+
+.error-msg {
+  margin: 0 0 16px;
+  color: var(--ion-color-danger);
+  font-size: 0.95rem;
+}
+
+.submit-button {
+  margin-top: 4px;
+  height: 52px;
+  font-weight: 700;
+}
+
+@media (max-width: 520px) {
+  .tab2-wrapper {
+    margin: 14px auto;
+    padding: 0 12px;
+  }
+
+  .form-card ion-card-header {
+    padding: 18px 16px 12px;
+  }
+
+  .submit-button {
+    height: 48px;
+  }
 }
